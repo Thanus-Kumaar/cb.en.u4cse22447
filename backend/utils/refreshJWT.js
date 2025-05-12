@@ -1,5 +1,5 @@
-import { setToken } from "../auth/tokenManager";
-import { authorizationInstance } from "./axiosInstance";
+import { setToken } from "../auth/tokenManager.js";
+import { authorizationInstance } from "./axiosInstance.js";
 import { configDotenv } from "dotenv";
 configDotenv();
 

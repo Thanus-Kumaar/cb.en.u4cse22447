@@ -1,5 +1,6 @@
 import axios from "axios";
-import { getToken } from "../auth/tokenManager";
+import { getToken } from "../auth/tokenManager.js";
+import { refreshToken } from "./refreshJWT.js";
 
 // instance for getting jwt token from test server in case of expiration
 const authorizationInstance = axios.create({
@@ -11,7 +12,7 @@ const authorizationInstance = axios.create({
 
 // instance used for querying the stock data
 const queryInstance = axios.create({
-  baseURL: "http://20.244.56.144/evaluation-service/stocks",
+  baseURL: "http://20.244.56.144/evaluation-service/",
   headers: {
     "Content-Type": "application/json",
   },
