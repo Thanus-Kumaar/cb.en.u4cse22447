@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
+import { TextField, Button, Typography, Paper } from '@mui/material'
 
 export default function StockSearch() {
   const [ticker, setTicker] = useState('')
@@ -9,26 +10,30 @@ export default function StockSearch() {
     try {
       const res = await axios.get(`http://localhost:3000/stocks/${ticker}`)
       setData(res.data)
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      console.error(error)
       setData(null)
     }
   }
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-semibold mb-2">Stock Search</h2>
-      <input
-        className="border p-2 mr-2"
-        placeholder="Enter Ticker (e.g. AAPL)"
+    <div>
+      <Typography variant="h6" gutterBottom>Stock Search</Typography>
+      <TextField
+        label="Ticker Symbol"
         value={ticker}
         onChange={(e) => setTicker(e.target.value)}
+        variant="outlined"
+        size="small"
+        sx={{ mr: 2 }}
       />
-      <button className="bg-blue-500 text-white px-4 py-2" onClick={fetchStock}>
-        Search
-      </button>
+      <Button variant="contained" onClick={fetchStock}>Search</Button>
+
       {data && (
-        <pre className="bg-gray-100 mt-4 p-2 rounded text-sm overflow-auto">{JSON.stringify(data, null, 2)}</pre>
+        <Paper elevation={2} sx={{ mt: 3, p: 2 }}>
+          <Typography variant="subtitle1">Result:</Typography>
+          <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(data, null, 2)}</pre>
+        </Paper>
       )}
     </div>
   )

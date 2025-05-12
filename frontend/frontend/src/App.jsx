@@ -1,13 +1,17 @@
+import { Container, Typography, Divider } from '@mui/material'
 import StockSearch from './components/StockSearch'
 import StockCorrelation from './components/StockCorrelation'
 
 function App() {
   return (
-    <div className="max-w-2xl mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-4 text-center">Stock Analysis Dashboard</h1>
+    <Container maxWidth="md" sx={{ py: 4 }}>
+      <Typography variant="h4" gutterBottom align="center">
+        Stock Dashboard
+      </Typography>
       <StockSearch />
+      <Divider sx={{ my: 4 }} />
       <StockCorrelation />
-    </div>
+    </Container>
   )
 }
 

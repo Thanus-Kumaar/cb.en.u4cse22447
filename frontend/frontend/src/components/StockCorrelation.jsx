@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
+import { TextField, Button, Typography, Paper } from '@mui/material'
 
 export default function StockCorrelation() {
   const [ticker1, setTicker1] = useState('')
@@ -13,32 +14,38 @@ export default function StockCorrelation() {
         ticker2,
       })
       setResult(res.data)
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      console.error(error)
       setResult(null)
     }
   }
 
   return (
-    <div className="p-4 mt-8">
-      <h2 className="text-xl font-semibold mb-2">Stock Correlation</h2>
-      <input
-        className="border p-2 mr-2"
-        placeholder="Ticker 1"
+    <div>
+      <Typography variant="h6" gutterBottom>Stock Correlation</Typography>
+      <TextField
+        label="Ticker 1"
         value={ticker1}
         onChange={(e) => setTicker1(e.target.value)}
+        variant="outlined"
+        size="small"
+        sx={{ mr: 2 }}
       />
-      <input
-        className="border p-2 mr-2"
-        placeholder="Ticker 2"
+      <TextField
+        label="Ticker 2"
         value={ticker2}
         onChange={(e) => setTicker2(e.target.value)}
+        variant="outlined"
+        size="small"
+        sx={{ mr: 2 }}
       />
-      <button className="bg-green-500 text-white px-4 py-2" onClick={fetchCorrelation}>
-        Get Correlation
-      </button>
+      <Button variant="contained" color="success" onClick={fetchCorrelation}>Get Correlation</Button>
+
       {result && (
-        <pre className="bg-gray-100 mt-4 p-2 rounded text-sm overflow-auto">{JSON.stringify(result, null, 2)}</pre>
+        <Paper elevation={2} sx={{ mt: 3, p: 2 }}>
+          <Typography variant="subtitle1">Result:</Typography>
+          <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(result, null, 2)}</pre>
+        </Paper>
       )}
     </div>
   )
