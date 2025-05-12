@@ -6,6 +6,7 @@ import { refreshToken } from "./utils/refreshJWT.js";
 import errorHandler from "./middleware/errorHandler.js";
 import { getToken } from "./auth/tokenManager.js";
 import AppError from "./utils/appError.js";
+import router from "./routes/stocks.route.js";
 configDotenv();
 
 const app = express();
@@ -47,6 +48,8 @@ try {
 app.get("/test", (req, res) => {
   console.log("Application server is running!");
 });
+
+app.use(router);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
