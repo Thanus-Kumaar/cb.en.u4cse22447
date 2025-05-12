@@ -10,10 +10,7 @@ export const loadStockAbbreviations = async () => {
     for (const abbreviation of Object.values(stocks)) {
       stockAbbreviations.add(abbreviation);
     }
-  } catch (error) {
-    console.error("[ERR]: Failed to load stock abbreviations:", error);
-    throw error;
-  }
+  } catch (error) {}
 };
 
 // Function to validate the stock abbreviation
@@ -31,8 +28,5 @@ export const validateStock = async (ticker) => {
     } else {
       return false;
     }
-  } catch (error) {
-    console.error('[ERR]: Failed to validate stock:', error);
-    throw error;
-  }
+  } catch (error) {}
 };

@@ -1,4 +1,5 @@
 import { setToken } from "../auth/tokenManager.js";
+import AppError from "./appError.js";
 import { authorizationInstance } from "./axiosInstance.js";
 import { configDotenv } from "dotenv";
 configDotenv();
@@ -15,16 +16,14 @@ const payload = {
 export const refreshToken = async () => {
   try {
     const response = await authorizationInstance.post("", payload);
-    if (response.status != 200) {
-      console.error(
+    if (response.status < 200 || response.status >= 300) {
+      throw new AppError(
         "[ERR]: App credentials or Client credentials are incorrect and unable to access the test server!!"
       );
-      return;
     }
     const newToken = response.data.access_token;
     setToken(newToken);
   } catch (error) {
-    console.error("[ERR]: Failed to refresh token:", error);
-    throw error;
+    throw new AppError("[ERR]: Failed to refresh token", 500, error.message);
   }
 };

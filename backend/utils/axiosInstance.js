@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getToken } from "../auth/tokenManager.js";
 import { refreshToken } from "./refreshJWT.js";
+import AppError from "./appError.js";
 
 // instance for getting jwt token from test server in case of expiration
 const authorizationInstance = axios.create({
@@ -46,13 +47,20 @@ queryInstance.interceptors.response.use(
         if (jwt) {
           error.config.headers.Authorization = `Bearer ${jwt}`;
           return axios(error.config);
+        } else {
+          throw new AppError("Failed to retrieve refreshed token", 500);
         }
       } catch (refreshError) {
-        console.error("[ERR]: Token refresh failed", refreshError);
-        return Promise.reject(refreshError);
+        return Promise.reject(
+          new AppError(
+            "Token refresh failed. Please check client credentials.",
+            401
+          )
+        );
       }
     }
-    return Promise.reject(error);
+
+    return Promise.reject(new AppError("Something went wrong!", 500));
   }
 );
 

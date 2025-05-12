@@ -1,3 +1,4 @@
+import AppError from "../utils/appError.js";
 import { queryInstance } from "../utils/axiosInstance.js";
 
 // Function to get the stocks listed in the stock exchange
@@ -6,9 +7,13 @@ export const getListedStocks = async () => {
     const response = await queryInstance.get(`/stocks`);
     // NOTE: The stock in response is a dictionary with {compnay_name: ABRV}
     return response.data.stock;
-  } catch (error) {
-    console.error(`[ERR]: Failed to fetch available stocks:`, error);
-    throw error;
+  } catch (err) {
+    if (err instanceof AppError) {
+      console.error(`[AppError]: ${err.message}`);
+      if (err.details) console.error("Details:", err.details);
+    } else {
+      console.error("[Unexpected Error]:", err);
+    }
   }
 };
 
@@ -18,8 +23,12 @@ export const getStockPrice = async (ticker) => {
     const response = await queryInstance.get(`/stocks/${ticker}`);
     return response.data.stock;
   } catch (error) {
-    console.error(`[ERR]: Failed to fetch stock price for ${ticker}:`, error);
-    throw error;
+    if (err instanceof AppError) {
+      console.error(`[AppError]: ${err.message}`);
+      if (err.details) console.error("Details:", err.details);
+    } else {
+      console.error("[Unexpected Error]:", err);
+    }
   }
 };
 
@@ -31,10 +40,11 @@ export const getStockPriceHistory = async (ticker, minutes) => {
     );
     return response.data;
   } catch (error) {
-    console.error(
-      `[ERR]: Failed to fetch stock price history for ${ticker}:`,
-      error
-    );
-    throw error;
+    if (err instanceof AppError) {
+      console.error(`[AppError]: ${err.message}`);
+      if (err.details) console.error("Details:", err.details);
+    } else {
+      console.error("[Unexpected Error]:", err);
+    }
   }
 };
