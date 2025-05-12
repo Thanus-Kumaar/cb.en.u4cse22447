@@ -59,7 +59,7 @@ queryInstance.interceptors.response.use(
         );
       }
     }
-
+    console.log(error.message, error.response.data);
     return Promise.reject(new AppError("Something went wrong!", 500));
   }
 );

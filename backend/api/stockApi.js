@@ -6,7 +6,7 @@ export const getListedStocks = async () => {
   try {
     const response = await queryInstance.get(`/stocks`);
     // NOTE: The stock in response is a dictionary with {compnay_name: ABRV}
-    return response.data.stock;
+    return response.data.stocks;
   } catch (err) {
     if (err instanceof AppError) {
       console.error(`[AppError]: ${err.message}`);
@@ -22,7 +22,7 @@ export const getStockPrice = async (ticker) => {
   try {
     const response = await queryInstance.get(`/stocks/${ticker}`);
     return response.data.stock;
-  } catch (error) {
+  } catch (err) {
     if (err instanceof AppError) {
       console.error(`[AppError]: ${err.message}`);
       if (err.details) console.error("Details:", err.details);
@@ -39,7 +39,7 @@ export const getStockPriceHistory = async (ticker, minutes) => {
       `/stocks/${ticker}?minutes=${minutes}`
     );
     return response.data;
-  } catch (error) {
+  } catch (err) {
     if (err instanceof AppError) {
       console.error(`[AppError]: ${err.message}`);
       if (err.details) console.error("Details:", err.details);

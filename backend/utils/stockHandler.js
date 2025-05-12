@@ -1,7 +1,12 @@
 import { getListedStocks } from "../api/stockApi.js";
+import AppError from "./appError.js";
 
 // Set data structure is used to store stock abbreviations in memory as it has O(1) lookup and insertion
 let stockAbbreviations = new Set();
+
+export const getStockTickers = () => {
+  return stockAbbreviations;
+};
 
 // Function to load the stocks into memory
 export const loadStockAbbreviations = async () => {
@@ -10,7 +15,9 @@ export const loadStockAbbreviations = async () => {
     for (const abbreviation of Object.values(stocks)) {
       stockAbbreviations.add(abbreviation);
     }
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 };
 
 // Function to validate the stock abbreviation

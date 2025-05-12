@@ -1,7 +1,10 @@
 import express from "express";
 import cors from "cors";
 import { configDotenv } from "dotenv";
-import { loadStockAbbreviations } from "./utils/stockHandler.js";
+import {
+  getStockTickers,
+  loadStockAbbreviations,
+} from "./utils/stockHandler.js";
 import { refreshToken } from "./utils/refreshJWT.js";
 import errorHandler from "./middleware/errorHandler.js";
 import { getToken } from "./auth/tokenManager.js";
@@ -13,7 +16,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(errorHandler);
 
 // refreshing JWT token before any other query request
 try {
@@ -31,6 +33,7 @@ try {
 // loading stock list to memory
 try {
   await loadStockAbbreviations();
+  console.log("Loaded stock tickers: ", getStockTickers());
 } catch (err) {
   if (err instanceof AppError) {
     console.error(err.message);
@@ -50,6 +53,8 @@ app.get("/test", (req, res) => {
 });
 
 app.use(router);
+
+app.use(errorHandler);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

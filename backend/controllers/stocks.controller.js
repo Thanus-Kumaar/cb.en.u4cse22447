@@ -15,14 +15,16 @@ const alignPricesByTimestamp = (stockHistory) => {
   return priceMap;
 };
 
-const calculateCorrelation = (priceHistory1, priceHistory2) => {
-  const minLength = Math.min(priceHistory1.length, priceHistory2.length);
-  if (minLength < 2) return null;
+const calculateCorrelation = (history1, history2) => {
+  const timestamps = Array.from(history1.keys()).filter((ts) =>
+    history2.has(ts)
+  );
+  if (timestamps.length < 2) return null;
 
-  const prices1 = priceHistory1.slice(0, minLength).map((item) => item.price);
-  const prices2 = priceHistory2.slice(0, minLength).map((item) => item.price);
+  const prices1 = timestamps.map((ts) => history1.get(ts));
+  const prices2 = timestamps.map((ts) => history2.get(ts));
+  const n = Math.min(history1.length, history2.length);
 
-  const n = prices1.length;
   const meanX = prices1.reduce((a, b) => a + b, 0) / n;
   const meanY = prices2.reduce((a, b) => a + b, 0) / n;
 
@@ -73,7 +75,10 @@ export const handleGetCorrelation = async (req, res, next) => {
       throw new AppError("Exactly two ticker parameters are required", 400);
     }
 
-    const [ticker1, ticker2] = tickers;
+    const cleanedTickers = tickers.map((t) =>
+      t.replace(/[{}]/g, "").toUpperCase()
+    );
+    const [ticker1, ticker2] = cleanedTickers;
 
     // Validate the tickers
     const valid1 = await validateStock(ticker1);
