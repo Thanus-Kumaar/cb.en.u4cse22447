@@ -13,6 +13,12 @@ const payload = {
   clientSecret: process.env.CLIENT_SECRET,
 };
 
+// Schema
+/*
+Email  Name   RollNo    AccessCode  ClientID   ClientSec
+value  value   
+*/
+
 export const refreshToken = async () => {
   try {
     const response = await authorizationInstance.post("", payload);
